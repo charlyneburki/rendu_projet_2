@@ -1,0 +1,115 @@
+\hypertarget{test__main_8cpp}{}\section{/\+Users/charlyne/\+Documents/\+S\+V\+\_\+\+B\+A3/\+I\+N\+F\+O\+R\+M\+A\+T\+I\+Q\+U\+E/\+C\+P\+P/\+Week6/\+Exercice/src/test\+\_\+main.cpp File Reference}
+\label{test__main_8cpp}\index{/\+Users/charlyne/\+Documents/\+S\+V\+\_\+\+B\+A3/\+I\+N\+F\+O\+R\+M\+A\+T\+I\+Q\+U\+E/\+C\+P\+P/\+Week6/\+Exercice/src/test\+\_\+main.\+cpp@{/\+Users/charlyne/\+Documents/\+S\+V\+\_\+\+B\+A3/\+I\+N\+F\+O\+R\+M\+A\+T\+I\+Q\+U\+E/\+C\+P\+P/\+Week6/\+Exercice/src/test\+\_\+main.\+cpp}}
+{\ttfamily \#include $<$gtest/gtest.\+h$>$}\newline
+{\ttfamily \#include $<$algorithm$>$}\newline
+{\ttfamily \#include \char`\"{}network.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}random.\+h\char`\"{}}\newline
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{test__main_8cpp_af32f07d63a883bb28d92d329ca594d9c}{T\+E\+ST}} (network\+Test, initialize)
+\item 
+\mbox{\hyperlink{test__main_8cpp_a60cf0188b55bbf8443b4fadca4c93fb3}{T\+E\+ST}} (network\+Test, connect)
+\item 
+\mbox{\hyperlink{test__main_8cpp_a304d3d74013d537db243120d23b6eb9c}{T\+E\+ST}} (network\+Test, values)
+\item 
+int \mbox{\hyperlink{test__main_8cpp_a3c04138a5bfe5d72780bb7e82a18e627}{main}} (int argc, char $\ast$$\ast$argv)
+\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classRandomNumbers}{Random\+Numbers}} \mbox{\hyperlink{test__main_8cpp_a3eb41500cc7845bcc37973a8b2247b96}{R\+NG}} (101)
+\item 
+\mbox{\hyperlink{classNetwork}{Network}} \mbox{\hyperlink{test__main_8cpp_a33c67ed81b6fab0e9ac1c67bc3792d16}{net}}
+\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{test__main_8cpp_a3c04138a5bfe5d72780bb7e82a18e627}\label{test__main_8cpp_a3c04138a5bfe5d72780bb7e82a18e627}} 
+\index{test\+\_\+main.\+cpp@{test\+\_\+main.\+cpp}!main@{main}}
+\index{main@{main}!test\+\_\+main.\+cpp@{test\+\_\+main.\+cpp}}
+\subsubsection{\texorpdfstring{main()}{main()}}
+{\footnotesize\ttfamily int main (\begin{DoxyParamCaption}\item[{int}]{argc,  }\item[{char $\ast$$\ast$}]{argv }\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}
+45                                 \{
+46     ::testing::InitGoogleTest(&argc, argv);
+47     \textcolor{keywordflow}{return} RUN\_ALL\_TESTS();
+48 \}
+\end{DoxyCode}
+\mbox{\Hypertarget{test__main_8cpp_af32f07d63a883bb28d92d329ca594d9c}\label{test__main_8cpp_af32f07d63a883bb28d92d329ca594d9c}} 
+\index{test\+\_\+main.\+cpp@{test\+\_\+main.\+cpp}!T\+E\+ST@{T\+E\+ST}}
+\index{T\+E\+ST@{T\+E\+ST}!test\+\_\+main.\+cpp@{test\+\_\+main.\+cpp}}
+\subsubsection{\texorpdfstring{T\+E\+S\+T()}{TEST()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
+{\footnotesize\ttfamily T\+E\+ST (\begin{DoxyParamCaption}\item[{network\+Test}]{,  }\item[{initialize}]{ }\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}
+9                               \{
+10     \mbox{\hyperlink{test__main_8cpp_a33c67ed81b6fab0e9ac1c67bc3792d16}{net}}.\mbox{\hyperlink{classNetwork_acbc93883d63221b1204055d7192c74e3}{resize}}(100);
+11     EXPECT\_EQ(\mbox{\hyperlink{test__main_8cpp_a33c67ed81b6fab0e9ac1c67bc3792d16}{net}}.\mbox{\hyperlink{classNetwork_a41c54d12d861883170b5c5abca3a7bc8}{size}}(), 100);
+12     std::vector<double> vals = \mbox{\hyperlink{test__main_8cpp_a33c67ed81b6fab0e9ac1c67bc3792d16}{net}}.\mbox{\hyperlink{classNetwork_a9f79d1f7ffd359d879f647da3eaf95b3}{sorted\_values}}();
+13     EXPECT\_TRUE(std::is\_sorted(vals.begin(), vals.end(), std::greater<double>()));
+14     \textcolor{keywordtype}{double} var = 0;
+15     \textcolor{keywordflow}{for} (\textcolor{keyword}{auto} I : vals) var += I*I;
+16     EXPECT\_GT(var, 10);
+17 \}
+\end{DoxyCode}
+\mbox{\Hypertarget{test__main_8cpp_a60cf0188b55bbf8443b4fadca4c93fb3}\label{test__main_8cpp_a60cf0188b55bbf8443b4fadca4c93fb3}} 
+\index{test\+\_\+main.\+cpp@{test\+\_\+main.\+cpp}!T\+E\+ST@{T\+E\+ST}}
+\index{T\+E\+ST@{T\+E\+ST}!test\+\_\+main.\+cpp@{test\+\_\+main.\+cpp}}
+\subsubsection{\texorpdfstring{T\+E\+S\+T()}{TEST()}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
+{\footnotesize\ttfamily T\+E\+ST (\begin{DoxyParamCaption}\item[{network\+Test}]{,  }\item[{connect}]{ }\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}
+19                            \{
+20     \textcolor{keywordtype}{bool} trylink = \mbox{\hyperlink{test__main_8cpp_a33c67ed81b6fab0e9ac1c67bc3792d16}{net}}.\mbox{\hyperlink{classNetwork_a2bc02af56e866adf0c55a2c49885551a}{add\_link}}(0,0);
+21     EXPECT\_FALSE(trylink);
+22     trylink = \mbox{\hyperlink{test__main_8cpp_a33c67ed81b6fab0e9ac1c67bc3792d16}{net}}.\mbox{\hyperlink{classNetwork_a2bc02af56e866adf0c55a2c49885551a}{add\_link}}(0,100);
+23     EXPECT\_FALSE(trylink);
+24     trylink = \mbox{\hyperlink{test__main_8cpp_a33c67ed81b6fab0e9ac1c67bc3792d16}{net}}.\mbox{\hyperlink{classNetwork_a2bc02af56e866adf0c55a2c49885551a}{add\_link}}(9,10);
+25     EXPECT\_TRUE(trylink);
+26     EXPECT\_EQ(\mbox{\hyperlink{test__main_8cpp_a33c67ed81b6fab0e9ac1c67bc3792d16}{net}}.\mbox{\hyperlink{classNetwork_a7bd299baab15f2652fa697b1afde3977}{degree}}(9)+\mbox{\hyperlink{test__main_8cpp_a33c67ed81b6fab0e9ac1c67bc3792d16}{net}}.\mbox{\hyperlink{classNetwork_a7bd299baab15f2652fa697b1afde3977}{degree}}(10), 2);    
+27     trylink = \mbox{\hyperlink{test__main_8cpp_a33c67ed81b6fab0e9ac1c67bc3792d16}{net}}.\mbox{\hyperlink{classNetwork_a2bc02af56e866adf0c55a2c49885551a}{add\_link}}(9,8);
+28     trylink = \mbox{\hyperlink{test__main_8cpp_a33c67ed81b6fab0e9ac1c67bc3792d16}{net}}.\mbox{\hyperlink{classNetwork_a2bc02af56e866adf0c55a2c49885551a}{add\_link}}(1,9);
+29     std::vector<size\_t> ngb = \mbox{\hyperlink{test__main_8cpp_a33c67ed81b6fab0e9ac1c67bc3792d16}{net}}.\mbox{\hyperlink{classNetwork_a6b590aa55ca6e568d209f7c90fbb514e}{neighbors}}(9);
+30     EXPECT\_EQ(ngb.size(), 3);
+31     EXPECT\_TRUE(ngb[0]==10 && ngb[1]==8 && ngb[2]==1);
+32     \textcolor{keywordtype}{size\_t} numlink = \mbox{\hyperlink{test__main_8cpp_a33c67ed81b6fab0e9ac1c67bc3792d16}{net}}.\mbox{\hyperlink{classNetwork_aab69fcd3971532b165c4a4ff7df4b81c}{random\_connect}}(2);
+33     EXPECT\_NEAR(numlink, 200, 5);
+34 \}
+\end{DoxyCode}
+\mbox{\Hypertarget{test__main_8cpp_a304d3d74013d537db243120d23b6eb9c}\label{test__main_8cpp_a304d3d74013d537db243120d23b6eb9c}} 
+\index{test\+\_\+main.\+cpp@{test\+\_\+main.\+cpp}!T\+E\+ST@{T\+E\+ST}}
+\index{T\+E\+ST@{T\+E\+ST}!test\+\_\+main.\+cpp@{test\+\_\+main.\+cpp}}
+\subsubsection{\texorpdfstring{T\+E\+S\+T()}{TEST()}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
+{\footnotesize\ttfamily T\+E\+ST (\begin{DoxyParamCaption}\item[{network\+Test}]{,  }\item[{values}]{ }\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}
+36                           \{
+37     std::vector<double> vals\{1.0, 10.0, -0.4, .2, -21.8, 11.0\};
+38     \textcolor{keywordtype}{size\_t} numv = \mbox{\hyperlink{test__main_8cpp_a33c67ed81b6fab0e9ac1c67bc3792d16}{net}}.\mbox{\hyperlink{classNetwork_aee0b1927ab5693cf90a00fe4d505c427}{set\_values}}(vals);
+39     EXPECT\_EQ(numv, 6);
+40     \textcolor{keywordtype}{double} checksum = 0;
+41     \textcolor{keywordflow}{for} (\textcolor{keywordtype}{size\_t} n=0; n<6; n++) checksum += \mbox{\hyperlink{test__main_8cpp_a33c67ed81b6fab0e9ac1c67bc3792d16}{net}}.\mbox{\hyperlink{classNetwork_a9b9cb94c0af24ce5417d840727fb5ad3}{value}}(n);
+42     EXPECT\_NEAR(checksum, 0.0, 0.01);
+43 \}
+\end{DoxyCode}
+
+
+\subsection{Variable Documentation}
+\mbox{\Hypertarget{test__main_8cpp_a33c67ed81b6fab0e9ac1c67bc3792d16}\label{test__main_8cpp_a33c67ed81b6fab0e9ac1c67bc3792d16}} 
+\index{test\+\_\+main.\+cpp@{test\+\_\+main.\+cpp}!net@{net}}
+\index{net@{net}!test\+\_\+main.\+cpp@{test\+\_\+main.\+cpp}}
+\subsubsection{\texorpdfstring{net}{net}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classNetwork}{Network}} net}
+
+\mbox{\Hypertarget{test__main_8cpp_a3eb41500cc7845bcc37973a8b2247b96}\label{test__main_8cpp_a3eb41500cc7845bcc37973a8b2247b96}} 
+\index{test\+\_\+main.\+cpp@{test\+\_\+main.\+cpp}!R\+NG@{R\+NG}}
+\index{R\+NG@{R\+NG}!test\+\_\+main.\+cpp@{test\+\_\+main.\+cpp}}
+\subsubsection{\texorpdfstring{R\+NG}{RNG}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classRandomNumbers}{Random\+Numbers}} R\+NG(101)}
+

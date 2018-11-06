@@ -1,0 +1,163 @@
+\hypertarget{classSimulation}{}\section{Simulation Class Reference}
+\label{classSimulation}\index{Simulation@{Simulation}}
+
+
+{\ttfamily \#include $<$simulation.\+h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classSimulation_a7441762ef8cc50b5d9a8f44c247a1116}{Simulation}} (\mbox{\hyperlink{classNetwork}{Network}} $\ast$)
+\item 
+void \mbox{\hyperlink{classSimulation_a348e5955b3c7937d21fc851cad347eb8}{initialize}} (int, char $\ast$$\ast$)
+\item 
+void \mbox{\hyperlink{classSimulation_ae5c367f87c0b5dc9740bc6d00e44e72c}{run}} ()
+\end{DoxyCompactItemize}
+\subsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{classSimulation_a49899e122ecc9f0eaba8d40182030d24}{step}} () const
+\item 
+void \mbox{\hyperlink{classSimulation_a261acbceff8d384ea12cb010798504b2}{print}} (const int \&) const
+\end{DoxyCompactItemize}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classNetwork}{Network}} $\ast$ \mbox{\hyperlink{classSimulation_a5f1d8152b13bc4640c8a3fddcfe7eae9}{\+\_\+network}}
+\item 
+int \mbox{\hyperlink{classSimulation_a2db45338d73f8e7823eb85015532be23}{maxtime}}
+\item 
+int \mbox{\hyperlink{classSimulation_a6bfba2071d6358af042ca417637c6c36}{stepnum}}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+This is the top-\/level class, building all the objects and running the simulation, based on user-\/defined parameters. The dynamics is a discrete stochastic heat equation on the graph\+: each node in the network is initialized with a random value and these values then diffuse across the links. At each time-\/step random diffusion coefficients are drawn for each node. 
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classSimulation_a7441762ef8cc50b5d9a8f44c247a1116}\label{classSimulation_a7441762ef8cc50b5d9a8f44c247a1116}} 
+\index{Simulation@{Simulation}!Simulation@{Simulation}}
+\index{Simulation@{Simulation}!Simulation@{Simulation}}
+\subsubsection{\texorpdfstring{Simulation()}{Simulation()}}
+{\footnotesize\ttfamily Simulation\+::\+Simulation (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classNetwork}{Network}} $\ast$}]{\+\_\+net }\end{DoxyParamCaption})}
+
+The constructor takes a pointer to the network which the simulation will be run over. 
+\begin{DoxyCode}
+6 : \mbox{\hyperlink{classSimulation_a5f1d8152b13bc4640c8a3fddcfe7eae9}{\_network}}(\_net), \mbox{\hyperlink{classSimulation_a6bfba2071d6358af042ca417637c6c36}{stepnum}}(10) \{\}
+\end{DoxyCode}
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classSimulation_a348e5955b3c7937d21fc851cad347eb8}\label{classSimulation_a348e5955b3c7937d21fc851cad347eb8}} 
+\index{Simulation@{Simulation}!initialize@{initialize}}
+\index{initialize@{initialize}!Simulation@{Simulation}}
+\subsubsection{\texorpdfstring{initialize()}{initialize()}}
+{\footnotesize\ttfamily void Simulation\+::initialize (\begin{DoxyParamCaption}\item[{int}]{argc,  }\item[{char $\ast$$\ast$}]{argv }\end{DoxyParamCaption})}
+
+The initialization takes the user arguments and configures the network and the simulation parameters. 
+\begin{DoxyCode}
+8                                                  \{
+9     TCLAP::CmdLine cmd(\textcolor{stringliteral}{"Network simulation"});
+10     TCLAP::ValueArg<int> argNode(\textcolor{stringliteral}{"n"}, \textcolor{stringliteral}{"nodes"}, \textcolor{stringliteral}{"Number of nodes"}, \textcolor{keyword}{false}, 0, \textcolor{stringliteral}{"int"});
+11     cmd.add(argNode);
+12     TCLAP::ValueArg<long> argSeed(\textcolor{stringliteral}{"S"}, \textcolor{stringliteral}{"seed"}, \textcolor{stringliteral}{"Random seed"}, \textcolor{keyword}{false}, 0, \textcolor{stringliteral}{"long"});
+13     cmd.add(argSeed);
+14     TCLAP::ValueArg<double> argDegree(\textcolor{stringliteral}{"d"}, \textcolor{stringliteral}{"degree"}, \textcolor{stringliteral}{"Mean node degree"}, \textcolor{keyword}{false}, 4, \textcolor{stringliteral}{"double"});
+15     cmd.add(argDegree);
+16     TCLAP::ValueArg<int> argTime(\textcolor{stringliteral}{"t"}, \textcolor{stringliteral}{"time"}, \textcolor{stringliteral}{"Number of steps to simulate"}, \textcolor{keyword}{false}, 10, \textcolor{stringliteral}{"int"});
+17     cmd.add(argTime);
+18 
+19     cmd.parse(argc, argv);
+20 
+21     \mbox{\hyperlink{main_8cpp_aa68627d02426951087dcb2ed1f32099c}{RNG}}.\mbox{\hyperlink{classRandomNumbers_a9ee407185ec3f4e1a165edadb42c38e6}{initialize}}(argSeed.getValue());
+22     \textcolor{keywordtype}{int} nodes(argNode.getValue());
+23     \textcolor{keywordflow}{if} (nodes < 1) nodes = \mbox{\hyperlink{main_8cpp_aa68627d02426951087dcb2ed1f32099c}{RNG}}.\mbox{\hyperlink{classRandomNumbers_a69e33058b8a923f9597cf13421d5fcd4}{poisson}}(50);
+24     \mbox{\hyperlink{classSimulation_a5f1d8152b13bc4640c8a3fddcfe7eae9}{\_network}}->\mbox{\hyperlink{classNetwork_acbc93883d63221b1204055d7192c74e3}{resize}}(nodes);
+25     \textcolor{keywordtype}{double} degree(argDegree.getValue());
+26     \textcolor{keywordflow}{if} (degree < 1) degree = \mbox{\hyperlink{main_8cpp_aa68627d02426951087dcb2ed1f32099c}{RNG}}.\mbox{\hyperlink{classRandomNumbers_ae226c129494f9055ac37ed1af943d010}{uniform\_double}}(1, std::sqrt(nodes));
+27     \textcolor{keywordtype}{size\_t} nlink = \mbox{\hyperlink{classSimulation_a5f1d8152b13bc4640c8a3fddcfe7eae9}{\_network}}->\mbox{\hyperlink{classNetwork_aab69fcd3971532b165c4a4ff7df4b81c}{random\_connect}}(degree);
+28     std::cout << \mbox{\hyperlink{classSimulation_a5f1d8152b13bc4640c8a3fddcfe7eae9}{\_network}}->\mbox{\hyperlink{classNetwork_a41c54d12d861883170b5c5abca3a7bc8}{size}}() << \textcolor{stringliteral}{" nodes, "} << nlink << \textcolor{stringliteral}{" links\(\backslash\)n"};
+29     \mbox{\hyperlink{classSimulation_a2db45338d73f8e7823eb85015532be23}{maxtime}} = argTime.getValue();
+30 \}
+\end{DoxyCode}
+\mbox{\Hypertarget{classSimulation_a261acbceff8d384ea12cb010798504b2}\label{classSimulation_a261acbceff8d384ea12cb010798504b2}} 
+\index{Simulation@{Simulation}!print@{print}}
+\index{print@{print}!Simulation@{Simulation}}
+\subsubsection{\texorpdfstring{print()}{print()}}
+{\footnotesize\ttfamily void Simulation\+::print (\begin{DoxyParamCaption}\item[{const int \&}]{time }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [private]}}
+
+Prints out the network values every \mbox{\hyperlink{classSimulation_a6bfba2071d6358af042ca417637c6c36}{stepnum}} steps. 
+\begin{DoxyCode}
+41                                             \{
+42     std::cout << time << \textcolor{stringliteral}{": "};
+43     std::vector<double> vals = \mbox{\hyperlink{classSimulation_a5f1d8152b13bc4640c8a3fddcfe7eae9}{\_network}}->\mbox{\hyperlink{classNetwork_a9f79d1f7ffd359d879f647da3eaf95b3}{sorted\_values}}();
+44     \textcolor{keywordflow}{for} (\textcolor{keyword}{auto} I : vals) std::cout << I << \textcolor{stringliteral}{" "};
+45     std::cout << std::endl;
+46 \}
+\end{DoxyCode}
+\mbox{\Hypertarget{classSimulation_ae5c367f87c0b5dc9740bc6d00e44e72c}\label{classSimulation_ae5c367f87c0b5dc9740bc6d00e44e72c}} 
+\index{Simulation@{Simulation}!run@{run}}
+\index{run@{run}!Simulation@{Simulation}}
+\subsubsection{\texorpdfstring{run()}{run()}}
+{\footnotesize\ttfamily void Simulation\+::run (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Runs the entire simulation by calling \mbox{\hyperlink{classSimulation_a49899e122ecc9f0eaba8d40182030d24}{step()}} \mbox{\hyperlink{classSimulation_a2db45338d73f8e7823eb85015532be23}{maxtime}} times. 
+\begin{DoxyCode}
+33                      \{
+34     \textcolor{keywordflow}{for} (\textcolor{keywordtype}{int} time=0; time<\mbox{\hyperlink{classSimulation_a2db45338d73f8e7823eb85015532be23}{maxtime}}; time++) \{
+35         \textcolor{keywordflow}{if} ((time % \mbox{\hyperlink{classSimulation_a6bfba2071d6358af042ca417637c6c36}{stepnum}}) == 0) \mbox{\hyperlink{classSimulation_a261acbceff8d384ea12cb010798504b2}{print}}(time);
+36         \mbox{\hyperlink{classSimulation_a49899e122ecc9f0eaba8d40182030d24}{step}}();
+37     \}
+38     \mbox{\hyperlink{classSimulation_a261acbceff8d384ea12cb010798504b2}{print}}(\mbox{\hyperlink{classSimulation_a2db45338d73f8e7823eb85015532be23}{maxtime}});
+39 \}
+\end{DoxyCode}
+\mbox{\Hypertarget{classSimulation_a49899e122ecc9f0eaba8d40182030d24}\label{classSimulation_a49899e122ecc9f0eaba8d40182030d24}} 
+\index{Simulation@{Simulation}!step@{step}}
+\index{step@{step}!Simulation@{Simulation}}
+\subsubsection{\texorpdfstring{step()}{step()}}
+{\footnotesize\ttfamily void Simulation\+::step (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [private]}}
+
+One time step. 
+\begin{DoxyCode}
+48                             \{
+49     std::vector<double> next\_values(\mbox{\hyperlink{classSimulation_a5f1d8152b13bc4640c8a3fddcfe7eae9}{\_network}}->\mbox{\hyperlink{classNetwork_a41c54d12d861883170b5c5abca3a7bc8}{size}}());
+50     std::vector<double> epsilon(\mbox{\hyperlink{classSimulation_a5f1d8152b13bc4640c8a3fddcfe7eae9}{\_network}}->\mbox{\hyperlink{classNetwork_a41c54d12d861883170b5c5abca3a7bc8}{size}}());
+51     \mbox{\hyperlink{main_8cpp_aa68627d02426951087dcb2ed1f32099c}{RNG}}.\mbox{\hyperlink{classRandomNumbers_ae226c129494f9055ac37ed1af943d010}{uniform\_double}}(epsilon);
+52     \textcolor{keywordflow}{for} (\textcolor{keywordtype}{size\_t} node=0; node<next\_values.size(); node++) \{
+53         \textcolor{keywordtype}{double} cumul\_neighbs = 0;
+54         \textcolor{keywordflow}{for} (\textcolor{keyword}{auto} I : \mbox{\hyperlink{classSimulation_a5f1d8152b13bc4640c8a3fddcfe7eae9}{\_network}}->\mbox{\hyperlink{classNetwork_a6b590aa55ca6e568d209f7c90fbb514e}{neighbors}}(node)) cumul\_neighbs += 
+      \mbox{\hyperlink{classSimulation_a5f1d8152b13bc4640c8a3fddcfe7eae9}{\_network}}->\mbox{\hyperlink{classNetwork_a9b9cb94c0af24ce5417d840727fb5ad3}{value}}(I);
+55         \textcolor{keywordtype}{double} ddeg(\mbox{\hyperlink{classSimulation_a5f1d8152b13bc4640c8a3fddcfe7eae9}{\_network}}->\mbox{\hyperlink{classNetwork_a7bd299baab15f2652fa697b1afde3977}{degree}}(node));
+56         next\_values[node] = epsilon[node]*cumul\_neighbs/ddeg+(1-epsilon[node])*
+      \mbox{\hyperlink{classSimulation_a5f1d8152b13bc4640c8a3fddcfe7eae9}{\_network}}->\mbox{\hyperlink{classNetwork_a9b9cb94c0af24ce5417d840727fb5ad3}{value}}(node);
+57     \}
+58     \mbox{\hyperlink{classSimulation_a5f1d8152b13bc4640c8a3fddcfe7eae9}{\_network}}->\mbox{\hyperlink{classNetwork_aee0b1927ab5693cf90a00fe4d505c427}{set\_values}}(next\_values);
+59 \}
+\end{DoxyCode}
+
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{classSimulation_a5f1d8152b13bc4640c8a3fddcfe7eae9}\label{classSimulation_a5f1d8152b13bc4640c8a3fddcfe7eae9}} 
+\index{Simulation@{Simulation}!\+\_\+network@{\+\_\+network}}
+\index{\+\_\+network@{\+\_\+network}!Simulation@{Simulation}}
+\subsubsection{\texorpdfstring{\+\_\+network}{\_network}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classNetwork}{Network}}$\ast$ Simulation\+::\+\_\+network\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classSimulation_a2db45338d73f8e7823eb85015532be23}\label{classSimulation_a2db45338d73f8e7823eb85015532be23}} 
+\index{Simulation@{Simulation}!maxtime@{maxtime}}
+\index{maxtime@{maxtime}!Simulation@{Simulation}}
+\subsubsection{\texorpdfstring{maxtime}{maxtime}}
+{\footnotesize\ttfamily int Simulation\+::maxtime\hspace{0.3cm}{\ttfamily [private]}}
+
+number of steps until the end of the simulation \mbox{\Hypertarget{classSimulation_a6bfba2071d6358af042ca417637c6c36}\label{classSimulation_a6bfba2071d6358af042ca417637c6c36}} 
+\index{Simulation@{Simulation}!stepnum@{stepnum}}
+\index{stepnum@{stepnum}!Simulation@{Simulation}}
+\subsubsection{\texorpdfstring{stepnum}{stepnum}}
+{\footnotesize\ttfamily int Simulation\+::stepnum\hspace{0.3cm}{\ttfamily [private]}}
+
+number of steps between printouts 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/charlyne/\+Documents/\+S\+V\+\_\+\+B\+A3/\+I\+N\+F\+O\+R\+M\+A\+T\+I\+Q\+U\+E/\+C\+P\+P/\+Week6/\+Exercice/src/\mbox{\hyperlink{simulation_8h}{simulation.\+h}}\item 
+/\+Users/charlyne/\+Documents/\+S\+V\+\_\+\+B\+A3/\+I\+N\+F\+O\+R\+M\+A\+T\+I\+Q\+U\+E/\+C\+P\+P/\+Week6/\+Exercice/src/\mbox{\hyperlink{simulation_8cpp}{simulation.\+cpp}}\end{DoxyCompactItemize}
