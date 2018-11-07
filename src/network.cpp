@@ -62,11 +62,24 @@ size_t Network::random_connect(const double& avg_dist)
 size_t Network::set_values(const std::vector<double>& new_values)
 {
 	size_t count(0);
-	for(size_t i(0); i < new_values.size(); i++)
+	bool condition( new_values.size() < values.size() );
+	size_t taille(0);
+	
+	if(condition)
+	{
+		taille = new_values.size();
+	}
+	else
+	{
+		taille = values.size();
+	}
+	
+	for(size_t i(0); i < taille; i++)
 	{
 		values[i] = new_values[i];
 		count++;
 	}
+	
 	return count;
 }
 
